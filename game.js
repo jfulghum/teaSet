@@ -15,7 +15,6 @@ var cards = [{
   'background': 'purple'
 }];
 
-
 function checkSet(cards){
   var checkArr = []
   for (var key in cards[0]){
@@ -40,4 +39,6 @@ function uniqueOrSame(checkArr){
   return false;
 }
 
-console.log(checkSet(cats))
+
+
+console.log(checkSet(cards))

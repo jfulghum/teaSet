@@ -1,0 +1,10 @@
+.wrapper {
+  height: 110px;
+  width: 110px;
+}
+
+.card {
+  width: 20px;
+  height: 10px;
+  background-color: purple;
+}
