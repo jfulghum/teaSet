@@ -39,6 +39,14 @@ function uniqueOrSame(checkArr){
   return false;
 }
 
+var gameState = {
+  field = createBoard();
+}
 
+function generateBoard(gameState){
+  for (var i = 0; i < gameState.field.length; i++){
+
+  }
+}
 
 console.log(checkSet(cards))
