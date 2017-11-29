@@ -85,15 +85,20 @@ var deck = [
     hand: deal(),
     gameOver: false,
     selectedCards: [],
+    setsFoundArray:[],
     totalFound: 0
   }
+
+
 
 function enoughSets(hand) {
   var allCombos = getCombinations(hand, 3)
   if (totalSets(allCombos) < 2){
     return false;
   }
+  console.log(totalSets(hand))
   console.log(totalSets(allCombos))
+  console.log(allCombos)
   return true;
 }
 
@@ -108,6 +113,7 @@ function deal() {
       }
     }
   } while (!enoughSets(hand));
+
   return hand;
 }
 
@@ -131,6 +137,7 @@ function getCombinations(array, length) {
     return result;                          // return result
 }
 
+
 function totalSets(combos){
   var count = 0
   for (var i = 0; i < combos.length; i++) {
@@ -141,16 +148,36 @@ function totalSets(combos){
   return count
 }
 
+
+
 function checkSet(cards){
+  var answers = []
+  if (cards.length !== 3){
+    return false;
+  }
   for (var i in cards[0]){
-    console.log(cards[0][i])
     var checkArr = []
     checkArr.push(cards[0][i], cards[1][i], cards[2][i])
     if (!uniqueOrSame(checkArr)){
       return false;
     }
   }
+  // answers.push(cards)
   return true;
+}
+// TODO make it false if you pass in only one card!!
+
+function createAnswer(cards){
+  var answers = []
+  for (var i in cards[0]){
+    var checkArr = []
+    checkArr.push(cards[0][i], cards[1][i], cards[2][i])
+    if (!uniqueOrSame(checkArr)){
+      return false;
+    }
+  }
+  answers.push(cards)
+  return answers
 }
 
 function uniqueOrSame(checkArr){
@@ -190,26 +217,57 @@ function render(gameState){
   renderTotal()
   return wrapper
 }
+
+
 function renderTotal(){
 var total = document.getElementById("total")
-total.innerHTML = "You found " + gameState.totalFound +" of " + totalSets(gameState.hand) + " sets"
+//TODO never call totalSets on hand
+total.innerHTML = "You found " + gameState.totalFound +" of " + totalSets(getCombinations(gameState.hand, 3)) + " sets"
 }
 var currentTotal = 0;
 function addToSet(card){
   if (gameState.selectedCards.length < 3){
       gameState.selectedCards.push(card.className.slice(card.className.length - 4))
   }
-  else {
-    checkSet(gameState.selectedCards)
-    gameState.totalFound ++
-    renderTotal()
+  if (gameState.selectedCards.length === 3){
+    if (checkSet(gameState.selectedCards)){
+      compareFoundSets(gameState.selectedCards)
+    } else {
+      console.log("not a set")
+    }
     gameState.selectedCards =[]
-    console.log("Found set")
+
   }
   console.log(gameState.selectedCards)
+  console.log(createAnswer(gameState.hand))
 }
+
+
+
+function checkWin(){
+  //TODO never call totalSets on hand
+  if (totalSets(getCombinations(gameState.hand, 3)) === gameState.totalFound){
+    console.log("You found all the sets!")
+    gameState.gameOver = true
+  }
+}
+
+function compareFoundSets(selectedCards){
+  var ourCards = JSON.stringify(selectedCards.sort())
+  if (gameState.setsFoundArray.includes(ourCards)){
+      console.log("you found that set")
+
+  } else {
+      gameState.setsFoundArray.push(JSON.stringify(gameState.selectedCards.sort()))
+      gameState.totalFound ++
+      checkWin()
+      renderTotal()
+  }
+}
+
 function addToCount(hand) {
-  gameState.totalFoundSets += totalSets(hand);
+  //TODO never call totalSets on hand
+  gameState.totalFoundSets += totalSets(getCombinations(hand, 3 ));
   console.log(gameState)
 }
 
