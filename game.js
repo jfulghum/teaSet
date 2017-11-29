@@ -96,9 +96,6 @@ function enoughSets(hand) {
   if (totalSets(allCombos) < 2){
     return false;
   }
-  console.log(totalSets(hand))
-  console.log(totalSets(allCombos))
-  console.log(allCombos)
   return true;
 }
 
@@ -116,9 +113,6 @@ function deal() {
 
   return hand;
 }
-
-
-
 
 function getCombinations(array, length) {
     function fork(i, t) {                   // recursive fn with index & temp array
@@ -148,8 +142,6 @@ function totalSets(combos){
   return count
 }
 
-
-
 function checkSet(cards){
   var answers = []
   if (cards.length !== 3){
@@ -165,7 +157,6 @@ function checkSet(cards){
   // answers.push(cards)
   return true;
 }
-// TODO make it false if you pass in only one card!!
 
 function createAnswer(cards){
   var answers = []
@@ -226,8 +217,9 @@ total.innerHTML = "You found " + gameState.totalFound +" of " + totalSets(getCom
 }
 var currentTotal = 0;
 function addToSet(card){
-  if (gameState.selectedCards.length < 3){
-      gameState.selectedCards.push(card.className.slice(card.className.length - 4))
+  var currentCard = card.className.slice(card.className.length - 4);
+  if (gameState.selectedCards.length < 3 && (!gameState.selectedCards.includes(currentCard))){
+      gameState.selectedCards.push(currentCard);
   }
   if (gameState.selectedCards.length === 3){
     if (checkSet(gameState.selectedCards)){
@@ -235,7 +227,7 @@ function addToSet(card){
     } else {
       console.log("not a set")
     }
-    gameState.selectedCards =[]
+  gameState.selectedCards =[]
 
   }
   console.log(gameState.selectedCards)
@@ -266,7 +258,6 @@ function compareFoundSets(selectedCards){
 }
 
 function addToCount(hand) {
-  //TODO never call totalSets on hand
   gameState.totalFoundSets += totalSets(getCombinations(hand, 3 ));
   console.log(gameState)
 }
