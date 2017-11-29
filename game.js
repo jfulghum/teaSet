@@ -1,44 +1,3 @@
-var attributes = {
-  color: [0,1,2],
-  backgroundColor: [0,1,2],
-  shape: [0,1,2],
-  count: [0,1,2]
-}
-
-var colors = ["red", "green", "blue"];
-var bgcs = ["cyan", "yellow", "magenta"];
-
-// var deck = function(){
-//   myDeck = [];
-//   for (var i = 0; i < Object.keys(attributes).length - 1; i++){
-//     for( var j =0 ; j < Object.keys(attributes).length - 1; j++){
-//       for( var k =0 ; k < Object.keys(attributes).length - 1; k++){
-//           for( var l =0 ; l < Object.keys(attributes).length - 1; l++){
-//           card = {};
-//           card.color = attributes.color[i]
-//           card.backgroundColor = attributes.backgroundColor[j]
-//           card.shape = attributes.shape[k]
-//           card.count = attributes.count[l]
-//           myDeck.push(card)
-//         }
-//       }
-//     }
-//   }
-//   return myDeck;
-// }
-
-// var board = function(){
-//   var myboard = []
-//   myDeck = deck()
-//   for (var i = 0; i < 12; i++){
-//     currentCard = myDeck[Math.floor(Math.random() * ((81 - myboard.length) - 0) + 0)]
-//     myboard.push(myDeck.splice(currentCard, 1)[0])
-//     myDeck.push(currentCard)
-//   }
-//   return myboard
-// }
-//
-
 var deck = [
   '0000',
   '0001',
@@ -122,20 +81,9 @@ var deck = [
   '2221',
   '2222' ]
 
-// function generateBoard(){
-//   myBoard = board()
-//   allCombos = getCombinations(myBoard, 3)
-//   if (totalSets(allCombos) < 2){
-//     console.log('hi')
-//     return generateBoard();
-//   }
-//   return myBoard;
-// }
 
-function enoughCombosInHand(hand) {
-  console.log(hand);
+function enoughSets(hand) {
   var allCombos = getCombinations(hand, 3)
-  console.log(allCombos);
   if (totalSets(allCombos) < 2){
     return false;
   }
@@ -151,9 +99,8 @@ function deal() {
       if (hand.indexOf(nextCard) === -1){
         hand.push(nextCard)
       }
-      console.log("here");
     }
-  } while (!enoughCombosInHand(hand));
+  } while (!enoughSets(hand));
   return hand;
 }
 
@@ -180,9 +127,7 @@ function totalSets(allCombos){
   for (var i = 0; i < allCombos.length; i++) {
     if (checkSet(allCombos[i])){
       count++
-      console.log(count)
     }
-
   }
   return count
 }
@@ -211,10 +156,7 @@ function uniqueOrSame(checkArr){
   return false;
 }
 
-
-
 var gameState = {
-  //board: generateBoard(),
   hand: deal(),
   gameOver: false,
   selectedCards: []
@@ -224,26 +166,21 @@ function init(state) {
   render(state);
 }
 
+var colors = ["#9900ff", "#339999", "#45cea2"];
+var bgcs = ["cyan", "#ff0066", "magenta"];
+var shape = ["&", "%", "$"];
 
 function render(gameState){
   var wrapper = document.getElementsByClassName("wrapper");
   for (var i = 0; i < gameState.hand.length; i++) {
       var card = document.createElement("div");
-      card.innerHTML = "BLA";
       card.className = "card"+ " number" +i
       card.style.backgroundColor = colors[+(gameState.hand[i][0])];
       card.style.color = bgcs[+(gameState.hand[i][1])];
-      //card.setAttribute('style', 'background-color:' + currentColor);
-      //card.setAttribute('style', 'color:' + bgcs[+(gameState.hand[i][1])]);
+      card.innerHTML = shape[+(gameState.hand[i][2])].repeat(+(gameState.hand[i][3]) + 1);
       wrapper[0].appendChild(card)
   }
   return wrapper
-}
-
-function createCards() {
-  var card = document.createElement("div");
-  // card.innerHTML =
-
 }
 
 

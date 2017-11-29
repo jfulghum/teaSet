@@ -1,6 +1,7 @@
 .wrapper {
   height: 330px;
   width: 900px;
+
 }
 
 .card {
@@ -10,4 +11,8 @@
   padding:10px;
   margin:5px;
   display: inline-block;
+  font-size: 30px;
+  text-align: center;
+
+
 }

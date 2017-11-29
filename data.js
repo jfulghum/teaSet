@@ -14,11 +14,6 @@ var deck = function(){
     for( var j =0 ; j < Object.keys(attributes).length - 1; j++){
       for( var k =0 ; k < Object.keys(attributes).length - 1; k++){
           for( var l =0 ; l < Object.keys(attributes).length - 1; l++){
-          //
-          // card += attributes.color[i]
-          // card += attributes.backgroundColor[j]
-          // card += attributes.shape[k]
-          // card += attributes.count[l]
           card = "" + i + j + k + l;
           deck.push(card)
         }
