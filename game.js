@@ -81,12 +81,19 @@ var deck = [
   '2221',
   '2222' ]
 
+  var gameState = {
+    hand: deal(),
+    gameOver: false,
+    selectedCards: [],
+    totalFound: 0
+  }
 
 function enoughSets(hand) {
   var allCombos = getCombinations(hand, 3)
   if (totalSets(allCombos) < 2){
     return false;
   }
+  console.log(totalSets(allCombos))
   return true;
 }
 
@@ -103,6 +110,8 @@ function deal() {
   } while (!enoughSets(hand));
   return hand;
 }
+
+
 
 
 function getCombinations(array, length) {
@@ -122,10 +131,10 @@ function getCombinations(array, length) {
     return result;                          // return result
 }
 
-function totalSets(allCombos){
+function totalSets(combos){
   var count = 0
-  for (var i = 0; i < allCombos.length; i++) {
-    if (checkSet(allCombos[i])){
+  for (var i = 0; i < combos.length; i++) {
+    if (checkSet(combos[i])){
       count++
     }
   }
@@ -133,9 +142,10 @@ function totalSets(allCombos){
 }
 
 function checkSet(cards){
-  for (var key in cards[0]){
+  for (var i in cards[0]){
+    console.log(cards[0][i])
     var checkArr = []
-    checkArr.push(cards[0][key], cards[1][key], cards[2][key])
+    checkArr.push(cards[0][i], cards[1][i], cards[2][i])
     if (!uniqueOrSame(checkArr)){
       return false;
     }
@@ -156,11 +166,7 @@ function uniqueOrSame(checkArr){
   return false;
 }
 
-var gameState = {
-  hand: deal(),
-  gameOver: false,
-  selectedCards: []
-}
+
 
 function init(state) {
   render(state);
@@ -174,14 +180,41 @@ function render(gameState){
   var wrapper = document.getElementsByClassName("wrapper");
   for (var i = 0; i < gameState.hand.length; i++) {
       var card = document.createElement("div");
-      card.className = "card"+ " number" +i
+      card.className = "card"+ " number" + gameState.hand[i]
       card.style.backgroundColor = colors[+(gameState.hand[i][0])];
       card.style.color = bgcs[+(gameState.hand[i][1])];
       card.innerHTML = shape[+(gameState.hand[i][2])].repeat(+(gameState.hand[i][3]) + 1);
+      card.setAttribute("onClick", "addToSet(this)")
       wrapper[0].appendChild(card)
   }
+  renderTotal()
   return wrapper
 }
+function renderTotal(){
+var total = document.getElementById("total")
+total.innerHTML = "You found " + gameState.totalFound +" of " + totalSets(gameState.hand) + " sets"
+}
+var currentTotal = 0;
+function addToSet(card){
+  if (gameState.selectedCards.length < 3){
+      gameState.selectedCards.push(card.className.slice(card.className.length - 4))
+  }
+  else {
+    checkSet(gameState.selectedCards)
+    gameState.totalFound ++
+    renderTotal()
+    gameState.selectedCards =[]
+    console.log("Found set")
+  }
+  console.log(gameState.selectedCards)
+}
+function addToCount(hand) {
+  gameState.totalFoundSets += totalSets(hand);
+  console.log(gameState)
+}
 
+//if someone clicks same card twice - don't add
+// checks set when selectedCards.length equals 3
+//set gets reset to 0 when selectedCards reaches 3
 
 init(gameState);
