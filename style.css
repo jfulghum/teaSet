@@ -22,7 +22,7 @@
 
 
 .card:hover {
-  border:2px solid brown;
+  filter: brightness(65%);
 }
 
 #total {
