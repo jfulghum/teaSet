@@ -1,18 +1,29 @@
+.body {
+  background-color: pink;
+  display: flex;
+  justify-content: center;
+}
+
 .wrapper {
   height: 330px;
   width: 900px;
-
 }
 
 .card {
   width: 180px;
   height: 100px;
-  /*background-color: purple;*/
   padding:10px;
-  margin:5px;
+  margin: 5px;
   display: inline-block;
   font-size: 30px;
   text-align: center;
+  border-radius: 15px;
+}
 
-
+#total {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: lighter;
+  display: flex;
+  justify-content: center;
 }
