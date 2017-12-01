@@ -20,6 +20,11 @@
   border-radius: 15px;
 }
 
+
+.card:hover {
+  border:2px solid brown;
+}
+
 #total {
   font-family: 'Cormorant Garamond', serif;
   font-size: 24px;

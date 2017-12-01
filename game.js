@@ -201,10 +201,6 @@ var colors = ["#ff2d55", "#fcd964", "ffcc00"]
 // var colors = ["red", "blue", "purple"]
 
 
-
-// shape.push(selectElementsByClassName("fa fa-coffee"))
-var className = "fa fa-coffee"
-
 function render(gameState){
   for (var i = 0; i < gameState.hand.length; i++) {
     var wrapper = document.getElementsByClassName("wrapper");
