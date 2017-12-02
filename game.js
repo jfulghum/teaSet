@@ -81,14 +81,22 @@ var deck = [
   '2221',
   '2222' ]
 
-  var gameState = {
-    hand: deal(),
-    gameOver: false,
-    selectedCards: [],
-    setsFoundArray:[],
-    totalFound: 0,
-    setStatus: ""
-  }
+var attrs = {
+  BGC: 0,
+  COLOR: 1,
+  SHAPE: 2,
+  COUNT: 3
+}
+
+var gameState = {
+  hand: [],
+  gameOver: false,
+  selectedCards: [],
+  setsFoundArray:[],
+  totalFound: 0,
+  setStatus: "",
+  answers: []
+}
 
 function deal() {
   var hand = []
@@ -101,7 +109,6 @@ function deal() {
       }
     }
   } while (!enoughSets(hand));
-
   return hand;
 }
 
@@ -110,11 +117,8 @@ function enoughSets(hand) {
   if (totalSets(allCombos) < 2){
     return false;
   }
-  console.log(totalSets(hand))
-  console.log(totalSets(allCombos))
   return true;
 }
-
 
 function getCombinations(array, length) {
     function fork(i, t) {                   // recursive fn with index & temp array
@@ -133,11 +137,14 @@ function getCombinations(array, length) {
     return result;                          // return result
 }
 
-
 function totalSets(combos){
-  var count = 0
+  var count = 0;
+  console.log("gameState", gameState);
+  gameState.answers.length = 0;
   for (var i = 0; i < combos.length; i++) {
     if (checkSet(combos[i])){
+      gameState.answers.push(combos[i])
+
       count++
     }
   }
@@ -147,7 +154,7 @@ function totalSets(combos){
 function checkSet(cards){
   var answers = []
   if (cards.length !== 3){
-    return false;
+    throw new Error("You may only have a set of 3 cards");
   }
   for (var i in cards[0]){
     var checkArr = []
@@ -185,88 +192,38 @@ function uniqueOrSame(checkArr){
   return false;
 }
 
-
-
 function init(state) {
+  gameState.hand = deal();
   render(state);
 }
-// #1A2930 "#E9C893"
-// "#3CC47C"
-var bgcs = ["#C0B283", "#1A2930" , "#49274a" ];
-// var bgcs = ["#FEDCD2", "#DF744A", "#DCB239"]
-// var bgcs = ["#5856d6", "#ff3b30", "4cd964"]
-var colors = ["#ff2d55", "#fcd964", "ffcc00"]
-// var colors = ["#94618e", "#49274a", "#f4decb"]
-// var colors = ["#9900ff", "#339999", "#45cea2"];
-// var colors = ["red", "blue", "purple"]
 
+var bgcs = ["#C0B283", "#1A2930" , "#49274a" ]
+var colors = ["#ff2d55", "#fcd964", "ffcc00"]
+var shapes = ["fa-circle", "fa-coffee", "fa-spoon"]
 
 function render(gameState){
   for (var i = 0; i < gameState.hand.length; i++) {
-    var wrapper = document.getElementsByClassName("wrapper");
-    var circle = document.createElement("i")
-    circle.className = "fa fa-circle"
-    circle.setAttribute("aria-hidden", "true")
-
-    var cup = document.createElement("i")
-    cup.className = "fa fa-coffee"
-    cup.setAttribute("aria-hidden", "true")
-
-    var spoon = document.createElement("i")
-    spoon.className = "fa fa-spoon"
-    spoon.setAttribute("aria-hidden", "true")
-
-    var circle2 = document.createElement("i")
-    circle2.className = "fa fa-circle"
-    circle2.setAttribute("aria-hidden", "true")
-
-    var cup2 = document.createElement("i")
-    cup2.className = "fa fa-coffee"
-    cup2.setAttribute("aria-hidden", "true")
-
-    var spoon2 = document.createElement("i")
-    spoon2.className = "fa fa-spoon"
-    spoon2.setAttribute("aria-hidden", "true")
-
-    var circle3 = document.createElement("i")
-    circle3.className = "fa fa-circle"
-    circle3.setAttribute("aria-hidden", "true")
-
-    var cup3 = document.createElement("i")
-    cup3.className = "fa fa-coffee"
-    cup3.setAttribute("aria-hidden", "true")
-
-    var spoon3 = document.createElement("i")
-    spoon3.className = "fa fa-spoon"
-    spoon3.setAttribute("aria-hidden", "true")
-
-    var shape = [circle, cup, spoon]
-    var shape2 = [circle2, cup2, spoon2]
-    var shape3 = [circle3, cup3, spoon3]
-
-    console.log(shape)
-      var card = document.createElement("div");
-      card.className = "card"+ " number" + gameState.hand[i]
-      card.style.backgroundColor = bgcs[+(gameState.hand[i][0])];
-      card.style.color = colors[+(gameState.hand[i][1])];
-      if ( +(gameState.hand[i][3]) == 0){
-          card.appendChild(shape[+(gameState.hand[i][2])])
-      } else if ( +(gameState.hand[i][3]) == 1) {
-        card.appendChild(shape[+(gameState.hand[i][2])])
-        card.appendChild(shape2[+(gameState.hand[i][2])]) //.repeat(+(gameState.hand[i][3]) + 1);
-      } else {
-        card.appendChild(shape[+(gameState.hand[i][2])])
-        card.appendChild(shape2[+(gameState.hand[i][2])])
-        card.appendChild(shape3[+(gameState.hand[i][2])])
-      }
-      card.setAttribute("onClick", "addToSet(this)")
-
-      wrapper[0].appendChild(card)
+    var wrapper = document.querySelector(".wrapper");
+    var card = document.createElement("div");
+    renderCard(card, gameState, i)
+    wrapper.appendChild(card)
   }
   renderTotal()
   return wrapper
 }
 
+function renderCard(card, gameState, cardNumber){
+  var cardData = gameState.hand[cardNumber];
+  card.className = "card"+ " number " + cardData
+  card.style.backgroundColor = bgcs[+(cardData[attrs.BGC])];
+  card.style.color = colors[+(cardData[attrs.COLOR])];
+  var icon = document.createElement(i);
+  icon.className = "fa " + shapes[+(cardData[attrs.SHAPE])];
+  for (var i = 0; i < +(cardData[attrs.COUNT]) + 1; i++){
+    card.appendChild(icon.cloneNode());
+  }
+  card.setAttribute("onClick", "addToSet(this)")
+}
 
 function renderTotal(){
   var total = document.getElementById("total")
@@ -284,17 +241,14 @@ function addToSet(card){
     if (checkSet(gameState.selectedCards)){
       compareFoundSets(gameState.selectedCards)
     } else {
-      setStatus = "Not a set"
+      gameState.setStatus = "Not a set"
       console.log("not a set")
     }
   gameState.selectedCards =[]
 
   }
   console.log(gameState.selectedCards)
-  // console.log(createAnswer(gameState.hand))
 }
-
-
 
 function checkWin(){
   if (totalSets(getCombinations(gameState.hand, 3)) === gameState.totalFound){
@@ -315,13 +269,6 @@ function compareFoundSets(selectedCards){
       renderTotal()
   }
 }
-//Q's for Mike
-//We were trying to build totalFound inside of deal()...
-//but whenever we were trying to run a function inside of gamestate that wasn't deal
-//..it was saying the name was was undefined
-//We want to be able to console.log the answers. All true set combos of hand.
-//Calling totalSet(hand) vs. totalSet(getCombinations(hand)) ??
-// Creating Cards?
 
 function addToCount(hand) {
   gameState.totalFoundSets += totalSets(getCombinations(hand, 3));
@@ -333,11 +280,8 @@ function addToCount(hand) {
 // Render Set Status - Not a set, You already found that set. That's a set!
 // CSS cleanup - center the cards etc
 // Instructions
-// Teacups, spoons, kettle?
-// SVG? SVG image element research
 // Build TBD # of cards with photoshop
 // the BIG WIN! teacups everywhere!:)
-
 
 
 //DONE
