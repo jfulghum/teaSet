@@ -98,6 +98,48 @@ var gameState = {
   answers: []
 }
 
+function init(state) {
+  gameState.hand = deal();
+  render(state);
+}
+
+var bgcs = ["red", "blue" , "yellow" ]
+var colors = ["purple", "cyan", "green"]
+var shapes = ["fa-circle", "fa-coffee", "fa-spoon"]
+
+function render(gameState){
+  for (var i = 0; i < gameState.hand.length; i++) {
+    var wrapper = document.querySelector(".wrapper");
+
+    var card = document.createElement("div");
+    renderCard(card, gameState, i)
+    wrapper.appendChild(card)
+  }
+  renderTotal()
+  return wrapper
+}
+
+function renderCard(card, gameState, cardNumber){
+  var cardData = gameState.hand[cardNumber];
+  card.className = "card"+ " number " + cardData
+  card.style.backgroundColor = bgcs[+(cardData[attrs.BGC])];
+  card.style.color = colors[+(cardData[attrs.COLOR])];
+  var icon = document.createElement(i);
+  icon.className = "fa " + shapes[+(cardData[attrs.SHAPE])];
+  for (var i = 0; i < +(cardData[attrs.COUNT]) + 1; i++){
+    card.appendChild(icon.cloneNode());
+  }
+  card.setAttribute("onClick", "addToSet(this)")
+}
+
+function renderTotal(){
+  var total = document.getElementById("total")
+  total.innerHTML = "You've found " + gameState.totalFound +" of " + totalSets(getCombinations(gameState.hand, 3)) + " sets"
+  var result = document.getElementById("result")
+  result.innerHTML = gameState.setStatus // Not a set, You already found that set
+}
+
+
 function deal() {
   var hand = []
   do {
@@ -166,19 +208,6 @@ function checkSet(cards){
   return true;
 }
 
-function createAnswer(cards){
-  var answers = []
-  for (var i in cards[0]){
-    var checkArr = []
-    checkArr.push(cards[0][i], cards[1][i], cards[2][i])
-    if (!uniqueOrSame(checkArr)){
-      return false;
-    }
-  }
-  answers.push(cards)
-  return answers
-}
-
 function uniqueOrSame(checkArr){
   var newArr = []
   for(var i =0; i <checkArr.length; i++){
@@ -192,6 +221,7 @@ function uniqueOrSame(checkArr){
   return false;
 }
 
+<<<<<<< HEAD
 function init(state) {
   gameState.hand = deal();
   render(state);
@@ -244,10 +274,22 @@ function addToSet(card){
         y: '-=10'
       } )
 
+=======
+function addToSet(card){
+  var currentCard = card.className.slice(card.className.length - 4);
+  if (gameState.selectedCards.length < 3 && (!gameState.selectedCards.includes(currentCard))){
+      // var selectedCard = document.getElementsByClassName("card number " + currentCard);
+      // console.log(selectedCard)
+      // $(selectedCard)
+      // .animate({'left':(-10)+'px'},200)
+      // .animate({'left':(+20)+'px'},200)
+      // .animate({'left':(-10)+'px'},200);
+>>>>>>> 08bf9711a8544638638f75886390dc1645f2a3f6
       gameState.selectedCards.push(currentCard);
   }
   if (gameState.selectedCards.length === 3){
     if (checkSet(gameState.selectedCards)){
+<<<<<<< HEAD
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
@@ -282,6 +324,14 @@ function addToSet(card){
         } )
       }
       // console.log("not a set:", gameState.selectedCards)
+=======
+      //This is where the correct Set animation should go
+      var selectedCards
+      compareFoundSets(gameState.selectedCards)
+    } else {
+      var result = document.getElementById("result")
+      result.innerHTML = "Not a set"
+>>>>>>> 08bf9711a8544638638f75886390dc1645f2a3f6
     }
   gameState.selectedCards =[]
 
@@ -300,7 +350,8 @@ function compareFoundSets(selectedCards){
   var ourCards = JSON.stringify(selectedCards.sort())
   if (gameState.setsFoundArray.includes(ourCards)){
       console.log("you found that set")
-
+      var result = document.getElementById("result")
+      result.innerHTML = "You've already found that set"
   } else {
       gameState.setsFoundArray.push(JSON.stringify(gameState.selectedCards.sort()))
       gameState.totalFound ++
