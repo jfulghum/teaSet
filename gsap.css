@@ -1,0 +1,22 @@
+.test-block {
+  border: 1px solid white;
+  text-align: center;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: bold;
+  background-color: rgba(255, 0, 0, 0.5);
+  z-index: 10;
+
+}
+
+#block {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  margin-bottom: 400px;
+}
