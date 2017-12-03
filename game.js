@@ -139,7 +139,7 @@ function getCombinations(array, length) {
 
 function totalSets(combos){
   var count = 0;
-  console.log("gameState", gameState);
+  // console.log("gameState", gameState);
   gameState.answers.length = 0;
   for (var i = 0; i < combos.length; i++) {
     if (checkSet(combos[i])){
@@ -198,7 +198,7 @@ function init(state) {
 }
 
 var bgcs = ["#C0B283", "#1A2930" , "#49274a" ]
-var colors = ["#ff2d55", "#fcd964", "ffcc00"]
+var colors = ["#ff2d55", "#fcd964", "#fff"]
 var shapes = ["fa-circle", "fa-coffee", "fa-spoon"]
 
 function render(gameState){
@@ -235,19 +235,58 @@ function renderTotal(){
 function addToSet(card){
   var currentCard = card.className.slice(card.className.length - 4);
   if (gameState.selectedCards.length < 3 && (!gameState.selectedCards.includes(currentCard))){
+      // Animate single card
+      var selectedCard = document.getElementsByClassName("card number " + currentCard);
+      var cardClass = selectedCard[0].className;
+      // console.log("this card's class:", cardClass);
+      TweenMax.to(selectedCard, .3, {
+        opacity: .5,
+        y: '-=10'
+      } )
+
       gameState.selectedCards.push(currentCard);
   }
   if (gameState.selectedCards.length === 3){
     if (checkSet(gameState.selectedCards)){
+      for (var i = 0; i < gameState.selectedCards.length; i++) {
+        var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
+        var cardClass = selectedCard[0].className;
+        // console.log("this card's class:", cardClass);
+        var timeline = new TimelineMax();
+
+        timeline.to(selectedCard, 1, {
+          rotation: -360,
+          opacity: 1,
+          scale: 1.25,
+          ease: Back.easeOut
+        })
+        .to(selectedCard, 1, {
+          rotation: 0,
+          scale: 1,
+          y: '+=10',
+          delay: .2
+        })
+      }
+      // Animate cards?
+
       compareFoundSets(gameState.selectedCards)
     } else {
       gameState.setStatus = "Not a set"
-      console.log("not a set")
+      for (var i = 0; i < gameState.selectedCards.length; i++) {
+        var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
+        var cardClass = selectedCard[0].className;
+        // console.log("this card's class:", cardClass);
+        TweenMax.to(selectedCard, 1, {
+          opacity: 1,
+          y: "=+10"
+        } )
+      }
+      // console.log("not a set:", gameState.selectedCards)
     }
   gameState.selectedCards =[]
 
   }
-  console.log(gameState.selectedCards)
+  // console.log(gameState.selectedCards)
 }
 
 function checkWin(){
@@ -272,7 +311,17 @@ function compareFoundSets(selectedCards){
 
 function addToCount(hand) {
   gameState.totalFoundSets += totalSets(getCombinations(hand, 3));
-  console.log(gameState)
+  // console.log(gameState)
+}
+
+function getAnswers() {
+  var answers = gameState.answers
+  for (var i = 0; i < answers.length; i++){
+    for (var j = 0; j < answers[i].length; j++){
+      var card = document.getElementsByClassName(answers[i][j])
+      console.log("Set " + (i+1) + ":", card[0])
+    }
+  }
 }
 
 // TODO
