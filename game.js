@@ -103,8 +103,8 @@ function init(state) {
   render(state);
 }
 
-var bgcs = ["red", "blue" , "yellow" ]
-var colors = ["purple", "cyan", "green"]
+var bgcs = ["#C0B283", "#1A2930" , "#49274a"]
+var colors = ["#ff2d55", "#fcd964", "ffcc00"]
 var shapes = ["fa-circle", "fa-coffee", "fa-spoon"]
 
 function render(gameState){
