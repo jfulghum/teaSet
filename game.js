@@ -306,12 +306,26 @@ function addToSet(card){
         var cardClass = selectedCard[0].className;
         // console.log("this card's class:", cardClass);
         var tl = new TimelineMax();
-
-        TweenMax.to(selectedCard, 1, {
-          opacity: 1,
-          y: "=+10",
+        tl.to(selectedCard, .1, {
+          x: "+=10",
           delay: .3
         })
+        .to(selectedCard, .1, {
+          x: "-=20"
+        })
+        tl.to(selectedCard, .1, {
+          x: "+=20"
+        })
+        .to(selectedCard, .1, {
+          x: "-=10",
+          ease: Back.easeOut
+        })
+        .to(selectedCard, 2, {
+          opacity: 1,
+          y: "+=10",
+          ease: Bounce.easeOut
+        })
+
         // .add(shake(selectedCard, 120, 0.01), "+=0.25")
       }
       // console.log("not a set:", gameState.selectedCards)
