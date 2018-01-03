@@ -269,10 +269,33 @@ function addToSet(card){
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
+<<<<<<< HEAD
         TweenMax.to(selectedCard, 1, {
+=======
+        // console.log("this card's class:", cardClass);
+        var tl = new TimelineMax();
+        tl.to(selectedCard, .1, {
+          x: "+=10",
+          delay: .3
+        })
+        .to(selectedCard, .1, {
+          x: "-=20"
+        })
+        tl.to(selectedCard, .1, {
+          x: "+=20"
+        })
+        .to(selectedCard, .1, {
+          x: "-=10",
+          ease: Back.easeOut
+        })
+        .to(selectedCard, 2, {
+>>>>>>> 0af38ab4eaf66c9564b85821aa2e9eb72dc0755e
           opacity: 1,
-          y: "=+10"
-        } )
+          y: "+=10",
+          ease: Bounce.easeOut
+        })
+
+        // .add(shake(selectedCard, 120, 0.01), "+=0.25")
       }
     }
   gameState.selectedCards =[]
@@ -315,6 +338,30 @@ function getAnswers() {
     }
   }
 }
+
+function shake(element, shakes, speed){
+	var tl = new TimelineLite();
+	TweenLite.set(element, {x:"+=0"}); // this creates a full _gsTransform on element
+	var transforms = element._gsTransform;
+  console.log(transforms)
+
+  //store the transform values that exist before the shake so we can return to them later
+  var initProps = {
+  	x:transforms.x,
+    y:transforms.y,
+    rotation:transforms.rotation
+	}
+
+  //shake a bunch of times
+  for(var i = 0; i < shakes; i++){
+		tl.to(element, speed ,{x:initProps.x + R(-4,4), y:initProps.y + R(-2,2), rotation:initProps.rotation + R(-5,5)})
+  }
+  //return to pre-shake values
+  tl.to(element, speed ,{x:initProps.x, y:initProps.y, scale:initProps.scale, rotation:initProps.rotation})
+
+  return tl;
+
+};
 
 // TODO
 // Unclick - when someone clicks same card, unselect remove from selectedCards
