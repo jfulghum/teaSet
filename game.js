@@ -121,7 +121,6 @@ function renderCard(card, gameState, cardNumber){
   var cardData = gameState.hand[cardNumber];
   card.className = "card"+ " number " + cardData
   card.style.backgroundImage = bgcs[+(cardData[attrs.BGC])];
-  // card.style.color = colors[+(cardData[attrs.COLOR])];
   var icon = document.createElement(i);
   icon.className = colors[+(cardData[attrs.COLOR])] + "_" + shapes[+(cardData[attrs.SHAPE])];
   for (var i = 0; i < +(cardData[attrs.COUNT]) + 1; i++){
@@ -269,33 +268,10 @@ function addToSet(card){
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
-<<<<<<< HEAD
         TweenMax.to(selectedCard, 1, {
-=======
-        // console.log("this card's class:", cardClass);
-        var tl = new TimelineMax();
-        tl.to(selectedCard, .1, {
-          x: "+=10",
-          delay: .3
-        })
-        .to(selectedCard, .1, {
-          x: "-=20"
-        })
-        tl.to(selectedCard, .1, {
-          x: "+=20"
-        })
-        .to(selectedCard, .1, {
-          x: "-=10",
-          ease: Back.easeOut
-        })
-        .to(selectedCard, 2, {
->>>>>>> 0af38ab4eaf66c9564b85821aa2e9eb72dc0755e
           opacity: 1,
-          y: "+=10",
-          ease: Bounce.easeOut
-        })
-
-        // .add(shake(selectedCard, 120, 0.01), "+=0.25")
+          y: "=+10"
+        } )
       }
     }
   gameState.selectedCards =[]
