@@ -1,3 +1,5 @@
+
+
 var deck = [
   '0000',
   '0001',
@@ -103,10 +105,6 @@ function init(state) {
   render(state);
 }
 
-var bgcs = ["red", "blue" , "yellow" ]
-var colors = ["purple", "cyan", "green"]
-var shapes = ["fa-circle", "fa-coffee", "fa-spoon"]
-
 function render(gameState){
   for (var i = 0; i < gameState.hand.length; i++) {
     var wrapper = document.querySelector(".wrapper");
@@ -122,23 +120,30 @@ function render(gameState){
 function renderCard(card, gameState, cardNumber){
   var cardData = gameState.hand[cardNumber];
   card.className = "card"+ " number " + cardData
-  card.style.backgroundColor = bgcs[+(cardData[attrs.BGC])];
-  card.style.color = colors[+(cardData[attrs.COLOR])];
+  card.style.backgroundImage = bgcs[+(cardData[attrs.BGC])];
+  // card.style.color = colors[+(cardData[attrs.COLOR])];
   var icon = document.createElement(i);
-  icon.className = "fa " + shapes[+(cardData[attrs.SHAPE])];
+  icon.className = colors[+(cardData[attrs.COLOR])] + "_" + shapes[+(cardData[attrs.SHAPE])];
   for (var i = 0; i < +(cardData[attrs.COUNT]) + 1; i++){
     card.appendChild(icon.cloneNode());
   }
   card.setAttribute("onClick", "addToSet(this)")
 }
 
+var bgcs = ["url('./assets/yellowWatercolor.jpg')",
+ "url('./assets/greenWatercolor.jpg')" ,
+ "url('./assets/purpleWatercolor.jpg')" ]
+var colors = ["green", "red" , "purple" ]
+var shapes = ["cup", "kettle", "spoon"]
+
+
 function renderTotal(){
   var total = document.getElementById("total")
-  total.innerHTML = "You've found " + gameState.totalFound +" of " + totalSets(getCombinations(gameState.hand, 3)) + " sets"
+  total.innerHTML = "You've found " + gameState.totalFound +" of "
+  + totalSets(getCombinations(gameState.hand, 3)) + " sets"
   var result = document.getElementById("result")
   result.innerHTML = gameState.setStatus // Not a set, You already found that set
 }
-
 
 function deal() {
   var hand = []
@@ -181,12 +186,10 @@ function getCombinations(array, length) {
 
 function totalSets(combos){
   var count = 0;
-  // console.log("gameState", gameState);
   gameState.answers.length = 0;
   for (var i = 0; i < combos.length; i++) {
     if (checkSet(combos[i])){
       gameState.answers.push(combos[i])
-
       count++
     }
   }
@@ -226,48 +229,13 @@ function init(state) {
   render(state);
 }
 
-var bgcs = ["#C0B283", "#1A2930" , "#49274a" ]
-var colors = ["#ff2d55", "#fcd964", "#fff"]
-var shapes = ["fa-circle", "fa-coffee", "fa-spoon"]
 
-function render(gameState){
-  for (var i = 0; i < gameState.hand.length; i++) {
-    var wrapper = document.querySelector(".wrapper");
-    var card = document.createElement("div");
-    renderCard(card, gameState, i)
-    wrapper.appendChild(card)
-  }
-  renderTotal()
-  return wrapper
-}
-
-function renderCard(card, gameState, cardNumber){
-  var cardData = gameState.hand[cardNumber];
-  card.className = "card"+ " number " + cardData
-  card.style.backgroundColor = bgcs[+(cardData[attrs.BGC])];
-  card.style.color = colors[+(cardData[attrs.COLOR])];
-  var icon = document.createElement(i);
-  icon.className = "fa " + shapes[+(cardData[attrs.SHAPE])];
-  for (var i = 0; i < +(cardData[attrs.COUNT]) + 1; i++){
-    card.appendChild(icon.cloneNode());
-  }
-  card.setAttribute("onClick", "addToSet(this)")
-}
-
-function renderTotal(){
-  var total = document.getElementById("total")
-  total.innerHTML = "You've found " + gameState.totalFound +" of " + totalSets(getCombinations(gameState.hand, 3)) + " sets"
-  // var result = document.getElementById("result")
-  // result.innerHTML = setStatus // Not a set, You already found that set
-}
 
 function addToSet(card){
   var currentCard = card.className.slice(card.className.length - 4);
   if (gameState.selectedCards.length < 3 && (!gameState.selectedCards.includes(currentCard))){
-      // Animate single card
       var selectedCard = document.getElementsByClassName("card number " + currentCard);
       var cardClass = selectedCard[0].className;
-      // console.log("this card's class:", cardClass);
       TweenMax.to(selectedCard, .3, {
         opacity: .5,
         y: '-=10'
@@ -280,7 +248,6 @@ function addToSet(card){
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
-        // console.log("this card's class:", cardClass);
         var timeline = new TimelineMax();
 
         timeline.to(selectedCard, 1, {
@@ -296,26 +263,21 @@ function addToSet(card){
           delay: .2
         })
       }
-      // Animate cards?
-
       compareFoundSets(gameState.selectedCards)
     } else {
       gameState.setStatus = "Not a set"
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
-        // console.log("this card's class:", cardClass);
         TweenMax.to(selectedCard, 1, {
           opacity: 1,
           y: "=+10"
         } )
       }
-      // console.log("not a set:", gameState.selectedCards)
     }
   gameState.selectedCards =[]
 
   }
-  // console.log(gameState.selectedCards)
 }
 
 function checkWin(){
