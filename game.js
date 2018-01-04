@@ -227,9 +227,6 @@ function init(state) {
   gameState.hand = deal();
   render(state);
 }
-
-
-
 function addToSet(card){
   var currentCard = card.className.slice(card.className.length - 4);
   if (gameState.selectedCards.length < 3 && (!gameState.selectedCards.includes(currentCard))){
@@ -239,7 +236,6 @@ function addToSet(card){
         opacity: .5,
         y: '-=10'
       } )
-
       gameState.selectedCards.push(currentCard);
   }
   if (gameState.selectedCards.length === 3){
@@ -264,24 +260,40 @@ function addToSet(card){
       }
       compareFoundSets(gameState.selectedCards)
     } else {
-      gameState.setStatus = "Not a set"
+      // gameState.setStatus = "Not a set"
+      // TODO it's saying its not a set at the wrong time sometimes
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
-        TweenMax.to(selectedCard, 1, {
+        var tl = new TimelineMax();
+        tl.to(selectedCard, .1, {
+          x: "+=10",
+          delay: .3
+        })
+        .to(selectedCard, .1, {
+          x: "-=20"
+        })
+        tl.to(selectedCard, .1, {
+          x: "+=20"
+        })
+        .to(selectedCard, .1, {
+          x: "-=10",
+          ease: Back.easeOut
+        })
+        .to(selectedCard, 2, {
           opacity: 1,
-          y: "=+10"
-        } )
+          y: "+=10",
+          ease: Bounce.easeOut
+        })
       }
     }
   gameState.selectedCards =[]
-
   }
 }
 
 function checkWin(){
   if (totalSets(getCombinations(gameState.hand, 3)) === gameState.totalFound){
-    console.log("You found all the sets!")
+    gameState.setStatus = "You found all the sets!"
     gameState.gameOver = true
   }
 }
@@ -289,9 +301,11 @@ function checkWin(){
 function compareFoundSets(selectedCards){
   var ourCards = JSON.stringify(selectedCards.sort())
   if (gameState.setsFoundArray.includes(ourCards)){
-      console.log("you found that set")
       var result = document.getElementById("result")
       result.innerHTML = "You've already found that set"
+      setTimeout(function(){
+        fade(document.querySelector("#result"))
+      }, 1000);
   } else {
       gameState.setsFoundArray.push(JSON.stringify(gameState.selectedCards.sort()))
       gameState.totalFound ++
@@ -300,9 +314,21 @@ function compareFoundSets(selectedCards){
   }
 }
 
+function fade(element) {
+    var op = 1;
+    var timer = setInterval(function () {
+        if (op <= 0.1){
+            clearInterval(timer);
+            result.innerHTML = ""
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op -= op * 0.2;
+    }, 50);
+}
+
 function addToCount(hand) {
   gameState.totalFoundSets += totalSets(getCombinations(hand, 3));
-  // console.log(gameState)
 }
 
 function getAnswers() {
