@@ -231,10 +231,8 @@ function init(state) {
 function addToSet(card){
   var currentCard = card.className.slice(card.className.length - 4);
   if (gameState.selectedCards.length < 3 && (!gameState.selectedCards.includes(currentCard))){
-      // Animate single card
       var selectedCard = document.getElementsByClassName("card number " + currentCard);
       var cardClass = selectedCard[0].className;
-      // console.log("this card's class:", cardClass);
       TweenMax.to(selectedCard, .3, {
         opacity: .5,
         y: '-=10'
@@ -247,7 +245,6 @@ function addToSet(card){
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
-        // console.log("this card's class:", cardClass);
         var timeline = new TimelineMax();
 
         timeline.to(selectedCard, 1, {
@@ -263,16 +260,15 @@ function addToSet(card){
           delay: .2
         })
       }
-      // Animate cards?
-
       compareFoundSets(gameState.selectedCards)
     } else {
       gameState.setStatus = "Not a set"
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
-        // console.log("this card's class:", cardClass);
+        console.log("this card's class:", cardClass);
         var tl = new TimelineMax();
+        console.log(tl)
         tl.to(selectedCard, .1, {
           x: "+=10",
           delay: .3
@@ -292,15 +288,10 @@ function addToSet(card){
           y: "+=10",
           ease: Bounce.easeOut
         })
-
-        // .add(shake(selectedCard, 120, 0.01), "+=0.25")
       }
-      // console.log("not a set:", gameState.selectedCards)
     }
   gameState.selectedCards =[]
-
   }
-  // console.log(gameState.selectedCards)
 }
 
 function checkWin(){
@@ -365,7 +356,6 @@ function shake(element, shakes, speed){
     y:transforms.y,
     rotation:transforms.rotation
 	}
-
   //shake a bunch of times
   for(var i = 0; i < shakes; i++){
 		tl.to(element, speed ,{x:initProps.x + R(-4,4), y:initProps.y + R(-2,2), rotation:initProps.rotation + R(-5,5)})
@@ -379,12 +369,8 @@ function shake(element, shakes, speed){
 
 // TODO
 // Unclick - when someone clicks same card, unselect remove from selectedCards
-// Render Set Status - Not a set, You already found that set. That's a set!
 // CSS cleanup - center the cards etc
-// Instructions
-// Build TBD # of cards with photoshop
 // the BIG WIN! teacups everywhere!:)
-
 
 //DONE
 //if someone clicks same card twice - don't add - done!
