@@ -227,15 +227,19 @@ function init(state) {
   gameState.hand = deal();
   render(state);
 }
+
 function addToSet(card){
   var currentCard = card.className.slice(card.className.length - 4);
   if (gameState.selectedCards.length < 3 && (!gameState.selectedCards.includes(currentCard))){
+      // Animate single card
       var selectedCard = document.getElementsByClassName("card number " + currentCard);
       var cardClass = selectedCard[0].className;
+      // console.log("this card's class:", cardClass);
       TweenMax.to(selectedCard, .3, {
         opacity: .5,
         y: '-=10'
       } )
+
       gameState.selectedCards.push(currentCard);
   }
   if (gameState.selectedCards.length === 3){
@@ -243,6 +247,7 @@ function addToSet(card){
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
+        // console.log("this card's class:", cardClass);
         var timeline = new TimelineMax();
 
         timeline.to(selectedCard, 1, {
@@ -258,13 +263,15 @@ function addToSet(card){
           delay: .2
         })
       }
+      // Animate cards?
+
       compareFoundSets(gameState.selectedCards)
     } else {
-      // gameState.setStatus = "Not a set"
-      // TODO it's saying its not a set at the wrong time sometimes
+      gameState.setStatus = "Not a set"
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
+        // console.log("this card's class:", cardClass);
         var tl = new TimelineMax();
         tl.to(selectedCard, .1, {
           x: "+=10",
@@ -285,10 +292,15 @@ function addToSet(card){
           y: "+=10",
           ease: Bounce.easeOut
         })
+
+        // .add(shake(selectedCard, 120, 0.01), "+=0.25")
       }
+      // console.log("not a set:", gameState.selectedCards)
     }
   gameState.selectedCards =[]
+
   }
+  // console.log(gameState.selectedCards)
 }
 
 function checkWin(){
