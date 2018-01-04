@@ -262,7 +262,7 @@ function addToSet(card){
       }
       compareFoundSets(gameState.selectedCards)
     } else {
-      gameState.setStatus = "Not a set"
+      // gameState.setStatus = "Not a set"
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;
