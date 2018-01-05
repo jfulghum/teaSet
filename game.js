@@ -121,8 +121,8 @@ function renderCard(card, gameState, cardNumber){
   var cardData = gameState.hand[cardNumber];
   card.className = "card"+ " number " + cardData
   card.style.backgroundImage = bgcs[+(cardData[attrs.BGC])];
-  var icon = document.createElement(i);
-  icon.className = colors[+(cardData[attrs.COLOR])] + "_" + shapes[+(cardData[attrs.SHAPE])];
+  var icon = document.createElement("div");
+  icon.className = colors[+(cardData[attrs.COLOR])] + "_" + shapes[+(cardData[attrs.SHAPE])] + " icon";
   for (var i = 0; i < +(cardData[attrs.COUNT]) + 1; i++){
     card.appendChild(icon.cloneNode());
   }
@@ -263,6 +263,7 @@ function addToSet(card){
       compareFoundSets(gameState.selectedCards)
     } else {
       // gameState.setStatus = "Not a set"
+      // TODO sometimes when it IS a set, it says Not a Set. need to fix this. Commented out for now.
       for (var i = 0; i < gameState.selectedCards.length; i++) {
         var selectedCard = document.getElementsByClassName("card number " + gameState.selectedCards[i]);
         var cardClass = selectedCard[0].className;

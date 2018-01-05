@@ -9,7 +9,7 @@ body {
   height: 80vh;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 25% 25% 25% 25%;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
   grid-template-rows: 1fr 1fr 1fr;
@@ -29,6 +29,7 @@ body {
 .card {
   width: 100%;
   height: 100%;
+  /*padding: 10px;*/
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,45 +37,46 @@ body {
   -webkit-backface-visibility: hidden;
   -webkit-transform: translateZ(0) scale(1.0, 1.0);
 }
+.icon {
+  background-repeat: no-repeat;
+   background-position: center center;
+  background-size: contain;
+  width: 33%;
+   height: 60%;
+}
 
 .green_cup {
-   content:url('./assets/good/green_cup.png');
-   width: 70px;
-}
-.green_kettle {
-   content:url('./assets/good/green_kettle.png');
-   width: 100px;
+   background-image: url('./assets/good/green_cup.png');
 
 }
+.green_kettle {
+   background-image: url('./assets/good/green_kettle.png');
+   background-size: 130%;
+}
 .green_spoon {
-   content:url('./assets/good/green_spoon.png');
-   width: 30px;
+   background-image: url('./assets/good/green_spoon.png');
 }
 
 .purple_cup {
-   content:url('./assets/good/purple_cup.png');
-   width: 70px;
+  background-image: url('./assets/good/purple_cup.png');
 }
 .purple_kettle {
-   content:url('./assets/good/purple_kettle.png');
-  width: 100px;
+  background-image: url('./assets/good/purple_kettle.png');
+  background-size: 130%;
 }
 .purple_spoon {
-   content:url('./assets/good/purple_spoon.png');
-     width: 30px;
+  background-image: url('./assets/good/purple_spoon.png');
 }
 
 .red_cup {
-   content:url('./assets/good/red_cup.png');
-   width: 70px;
+  background-image: url('./assets/good/red_cup.png');
 }
 .red_kettle {
-   content:url('./assets/good/red_kettle.png');
-   width: 100px;
+   background-image: url('./assets/good/red_kettle.png');
+   background-size: 130%;
 }
 .red_spoon {
-   content:url('./assets/good/red_spoon.png');
-   width: 30px;
+   background-image: url('./assets/good/red_spoon.png');
 }
 .card:hover {
   filter: brightness(65%);
@@ -89,10 +91,10 @@ body {
 }
 @media (max-width: 1000px) {
   .wrapper {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 33% 33% 33%;
     grid-column-gap: 20px;
     grid-row-gap: 20px;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 25% 25% 25% 25%;
   }
 }
 
